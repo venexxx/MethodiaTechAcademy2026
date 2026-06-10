@@ -5,14 +5,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 public class ImageBlur {
 
 
     public static void main(String[] args) {
-        String inputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/testBlur1.jpeg";
+
+        Scanner scanner = new Scanner(System.in);
+        String inputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/pngTest.png";
         String outputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/output.";
-        int radius = 10;
+
+        System.out.print("Enter radius: ");
+        int radius = Integer.parseInt(scanner.nextLine());
 
 
         try {
@@ -22,8 +27,24 @@ public class ImageBlur {
                 System.out.println("Invalid input!");
                 return;
             }
+            BufferedImage outputImage;
 
-            BufferedImage outputImage = applyMedianBlur(inputImage, radius);
+            System.out.println("Choose filter Median/AverageBrightness");
+            String filterType = scanner.nextLine();
+
+            switch (filterType) {
+                case "Median":
+                    outputImage = applyMedianBlur(inputImage, radius);
+                    break;
+                case "AverageBrightness":
+                    outputImage = applyAverageBrightnessBlur(inputImage, radius);
+                    break;
+                    default:
+                        System.out.println("Invalid input!");
+                        return;
+            }
+
+
             String format = getFileExtension(inputPath);
 
             if (format == null) {
@@ -32,7 +53,7 @@ public class ImageBlur {
 
             ImageIO.write(outputImage, format, new File(outputPath + format));
 
-            System.out.println("Saved!: " + outputPath);
+            System.out.println("Saved!: " + outputPath + format);
 
 
         } catch (IOException e) {
@@ -84,6 +105,37 @@ public class ImageBlur {
                 int newRgb = newColor.getRGB();
 
                 output.setRGB(x, y, newRgb);
+            }
+        }
+
+        return output;
+    }
+
+    public static BufferedImage applyAverageBrightnessBlur(BufferedImage input, int radius) {
+        int width = input.getWidth();
+        int height = input.getHeight();
+
+        BufferedImage output = new BufferedImage(width, height, input.getType());
+        int windowSize = (2 * radius + 1) * (2 * radius + 1);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int sumBrightness = 0;
+
+                for (int dy = -radius; dy <= radius; dy++) {
+                    for (int dx = -radius; dx <= radius; dx++) {
+                        int nx = clamp(x + dx, 0, width - 1);
+                        int ny = clamp(y + dy, 0, height - 1);
+
+                        Color color = new Color(input.getRGB(nx, ny));
+                        int brightness = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
+                        sumBrightness += brightness;
+                    }
+                }
+
+                int avgBrightness = sumBrightness / windowSize;
+                Color newColor = new Color(avgBrightness, avgBrightness, avgBrightness);
+                output.setRGB(x, y, newColor.getRGB());
             }
         }
 
