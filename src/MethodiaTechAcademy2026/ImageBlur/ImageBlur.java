@@ -11,8 +11,8 @@ public class ImageBlur {
 
     public static void main(String[] args) {
         String inputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/testBlur1.jpeg";
-        String outputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/output.jpeg";
-        int radius = 1;
+        String outputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/output.";
+        int radius = 10;
 
 
         try {
@@ -24,10 +24,16 @@ public class ImageBlur {
             }
 
             BufferedImage outputImage = applyMedianBlur(inputImage, radius);
+            String format = getFileExtension(inputPath);
 
-            ImageIO.write(outputImage, "jpg", new File(outputPath));
+            if (format == null) {
+                format = "jpg";
+            }
+
+            ImageIO.write(outputImage, format, new File(outputPath + format));
 
             System.out.println("Saved!: " + outputPath);
+
 
         } catch (IOException e) {
             System.out.println("Input Output Error!" + e.getMessage());
@@ -87,5 +93,18 @@ public class ImageBlur {
     public static int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(max, value));
     }
+
+
+    public static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+
+        if (dotIndex == -1 || dotIndex == fileName.length() - 1) {
+            System.out.println("Invalid file name!");
+            return null;
+        }
+
+        return fileName.substring(dotIndex + 1).toLowerCase();
+    }
+
 
 }
