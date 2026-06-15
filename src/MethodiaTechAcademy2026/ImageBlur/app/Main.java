@@ -1,7 +1,7 @@
 package MethodiaTechAcademy2026.ImageBlur.app;
 
+import MethodiaTechAcademy2026.ImageBlur.enums.ColourChanel;
 import MethodiaTechAcademy2026.ImageBlur.enums.FilterType;
-import MethodiaTechAcademy2026.ImageBlur.factory.FilterFactory;
 import MethodiaTechAcademy2026.ImageBlur.service.ImageProcessor;
 import MethodiaTechAcademy2026.ImageBlur.util.ImageUtils;
 
@@ -19,16 +19,28 @@ public class Main {
 
         String inputPath = readInputPath(scanner);
         FilterType filterType = readFilterType(scanner);
+        ColourChanel colorChannel = readColourChanel(scanner);
         int radius = readRadius(scanner);
 
         BufferedImage inputImage = loadImage(inputPath);
 
         ImageProcessor processor = new ImageProcessor();
-        BufferedImage outputImage = processor.process(inputImage, filterType, radius);
+        BufferedImage outputImage = processor.process(inputImage, filterType, radius, colorChannel);
 
+
+        saveImage(outputImage, inputPath);
+        outputImage = processor.process(outputImage, FilterType.COLOUR_FILTER, radius, colorChannel);
         saveImage(outputImage, inputPath);
 
 
+
+    }
+
+    private static ColourChanel readColourChanel(Scanner scanner) {
+        System.out.println("Colour Chanel: ");
+        String colourChanel = scanner.nextLine();
+        ColourChanel chanel = ColourChanel.valueOf(colourChanel.toUpperCase());
+        return chanel;
     }
 
     private static void saveImage(BufferedImage outputImage, String inputPath) {
