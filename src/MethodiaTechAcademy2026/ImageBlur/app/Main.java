@@ -1,7 +1,6 @@
 package MethodiaTechAcademy2026.ImageBlur.app;
 
 import MethodiaTechAcademy2026.ImageBlur.enums.ColourChanel;
-import MethodiaTechAcademy2026.ImageBlur.enums.FilterType;
 import MethodiaTechAcademy2026.ImageBlur.filters.*;
 import MethodiaTechAcademy2026.ImageBlur.service.ImageProcessor;
 import MethodiaTechAcademy2026.ImageBlur.util.ImageUtils;
@@ -11,9 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
@@ -25,32 +22,6 @@ public class Main {
         ImageProcessor processor = new ImageProcessor();
         BufferedImage outputImage = processor.process(inputImage,filters);
         saveImage(outputImage, inputPath);
-
-
-
-//
-
-//        String filterType = readFilterType(args);
-//
-//        ColourChanel colorChannel = readColourChanel(args);
-//
-//        int radius = readRadius(args);
-//
-//        List<Integer> cropParams = readCropParams(args);
-//
-
-        //List<FilterType> types = loadFiltersArgs(filterType,radius,colorChannel,cropParams);
-
-
-
-
-
-
-       // outputImage = processor.process(outputImage, FilterType.COLOUR_FILTER, radius, colorChannel);
-       // saveImage(outputImage, inputPath);
-
-
-
     }
 
     private static List<ImageFilter> parseFilters(String[] args) {
@@ -114,28 +85,7 @@ public class Main {
         return filters;
     }
 
-//    private static List<Integer> readCropParams(String[] args) {
-//        int x = Integer.parseInt(args[5]);
-//        int y = Integer.parseInt(args[6]);
-//
-//        int width = Integer.parseInt(args[7]);
-//        int height = Integer.parseInt(args[8]);
-//
-//        List<Integer> cropParams =List.of(x,y,width,height);
-//        return cropParams;
-//    }
-//
-//    private static List<FilterType> loadFiltersArgs() {
-//
-//    }
-//
-//    private static ColourChanel readColourChanel(String[] args) {
-//        String colourChanel = args[3];
-//        String colour = args[4];
-//        ColourChanel chanel = ColourChanel.valueOf(colour.toUpperCase());
-//        return chanel;
-//    }
-//
+
     private static void saveImage(BufferedImage outputImage, String inputPath) {
         String outputPath = "src/MethodiaTechAcademy2026/ImageBlur/img/output.";
         try {
@@ -159,7 +109,7 @@ public class Main {
     private static BufferedImage loadImage(String inputPath) {
         BufferedImage inputImage = null;
         try {
-            inputImage = ImageIO.read(new File(inputPath));
+            inputImage = ImageUtils.loadImage(inputPath);
 
             if (inputImage == null) {
                 throw new IOException("Invalid input path!");
@@ -170,24 +120,10 @@ public class Main {
         return inputImage;
     }
 
-    private static int readRadius(String[] args) {
-        return Integer.parseInt(args[2]);
-    }
-//
-//    private static FilterType readFilterType(String[] args) {
-//        String filterType = args[1];
-//        return switch (filterType) {
-//            case "Median" -> FilterType.MEDIAN;
-//            case "AverageBrightness" -> FilterType.AVERAGE_BRIGHTNESS;
-//            case "colorfilter" -> FilterType.COLOUR_FILTER;
-//            case "crop" -> FilterType.CROP_FILTER;
-//            default -> throw new IllegalArgumentException("Invalid filter type!");
-//        };
-//
-//    }
+
+
 
     private static String readInputPath(String[] args) {
         return  args[0];
-       //TODO: HTTPS-URL return  "https://as2.ftcdn.net/v2/jpg/09/59/54/27/1000_F_959542727_JGtEhgcqeXbpBKygqxPdODBpNAIM5P8L.jpg";
     }
 }

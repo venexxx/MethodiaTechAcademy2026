@@ -1,8 +1,6 @@
 package MethodiaTechAcademy2026.ImageBlur.service;
 
-import MethodiaTechAcademy2026.ImageBlur.enums.ColourChanel;
-import MethodiaTechAcademy2026.ImageBlur.enums.FilterType;
-import MethodiaTechAcademy2026.ImageBlur.factory.FilterFactory;
+
 import MethodiaTechAcademy2026.ImageBlur.filters.ImageFilter;
 
 import java.awt.image.BufferedImage;

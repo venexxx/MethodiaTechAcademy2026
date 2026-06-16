@@ -1,7 +1,11 @@
 package MethodiaTechAcademy2026.ImageBlur.util;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 public class ImageUtils {
 
@@ -32,5 +36,17 @@ public class ImageUtils {
         }
 
         return image;
+    }
+
+    public static BufferedImage loadImage(String imagePath) {
+        try {
+            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                return ImageIO.read(new URL(imagePath));
+            } else {
+                return ImageIO.read(new File(imagePath));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Could not load image: " + imagePath, e);
+        }
     }
 }
