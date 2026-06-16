@@ -4,5 +4,6 @@ public enum FilterType {
 
     MEDIAN,
     AVERAGE_BRIGHTNESS,
-    COLOUR_FILTER
+    COLOUR_FILTER,
+    CROP_FILTER
 }
